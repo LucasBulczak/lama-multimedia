@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8"/>
+    <!--/*@thymesVar id="title" type="com.gmail.alisarrian.lamamultimedia.controllers.MovieController"*/-->
+    <title th:text="${title}">Movies</title>
+</head>
+
+<body>
+    <!-- Odwołanie do metody index() w MovieController -->
+    <!--/*@thymesVar id="title" type="com.gmail.alisarrian.lamamultimedia.controllers.MovieController"*/-->
+    <h1 th:text="${title}">Default title</h1>
+
+    <!-- Sprawdzenie czy lista filmów istnieje i czy nie jest równa zero -->
+    
+    <!--/*@thymesVar id="movies" type="com.gmail.alisarrian.lamamultimedia.controllers.MovieController"*/-->
+    <p th:unless="${movies} and ${movies.size()}">There is no movies in your database!</p>
+
+    <!-- Link do formularza dodawania filmu
+     można to zapisać również jako:
+     <a href="/movies/add">Add Movie</a>-->
+    <a href="add.html">Add Movie</a>
+
+    <ul>
+        <!-- Iteruj przez listę filmów i wyświetl tytuł filmu -->
+        
+        <!--/*@thymesVar id="movie" type="com.gmail.alisarrian.lamamultimedia.models.Movie"*/-->
+        <li th:each="movie : ${movies}" th:text="${movie}" ></li>
+    </ul>
+</body>
+
+</html>
