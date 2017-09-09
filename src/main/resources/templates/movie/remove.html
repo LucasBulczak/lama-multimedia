@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<!--/*@thymesVar id="title" type="com.gmail.alisarrian.lamamultimedia.controllers.MovieController"*/-->
+<h1 th:text="${title}">Default title</h1>
+
+<nav th:replace="fragments :: navigation" ></nav>
+
+<!--
+możemy ustalić akcję, tzn. gdzie ma nas przekierować po naciśnięciu submit
+jeśli nie ma akcji, to przeniesie nas w to samo miejsce:
+http://localhost:8080/movies/add
+<form method="post" action="/movie/add">
+-->
+<form method="post">
+
+    <div th:each="movie : ${movies}" class="checkbox">
+        <input type="checkbox" name="ids" th:value="${movie.id}" th:id="${movie.id}"/>
+        <label th:for="${movie.id}" th:text="${movie.title}"></label>
+        <br />
+    </div>
+
+    <input type="submit" value="Remove Movie"/>
+
+</form>
+
+</body>
+
+</html>

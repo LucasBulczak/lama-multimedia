@@ -1,51 +1,111 @@
 package com.gmail.alisarrian.lamamultimedia.controllers;
 
+import com.gmail.alisarrian.lamamultimedia.models.Category;
+import com.gmail.alisarrian.lamamultimedia.models.Movie;
+import com.gmail.alisarrian.lamamultimedia.models.data.CategoryDao;
+import com.gmail.alisarrian.lamamultimedia.models.data.MovieDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("movies")
+@RequestMapping("movie")
 public class MovieController {
 
-    static List<String> movies = new ArrayList<>();
+    @Autowired
+    private MovieDao movieDao;
 
-    // Request path: /movies
+    @Autowired
+    private CategoryDao categoryDao;
+
+    // Request path: /movie
     @RequestMapping(value = "")
     public String index(Model model) {
 
-        model.addAttribute("movies", movies);
+        model.addAttribute("movies", movieDao.findAll());
         model.addAttribute("title", "My Movies");
 
-        return "movies/index";
+        return "movie/index";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddMovieForm(Model model) {
 
         model.addAttribute("title", "Add Movie");
+        model.addAttribute(new Movie()); /* equal to model.addAttribute("movie", new Movie());*/
+        model.addAttribute("categories", categoryDao.findAll());
 
-        return "movies/add";
+        return "movie/add";
     }
 
     //Jedna z dróg
 //    @RequestMapping(value = "add", method = RequestMethod.POST)
 //    public String processAddMovieForm(HttpServletRequest request) {
-//        String movieTitle = request.getParameter("movieTitle");
+//        String title = request.getParameter("title");
 //        return "redirect:";
 //    }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddMovieForm(@RequestParam String movieTitle) {
+    public String processAddMovieForm(Model model,
+                                      @RequestParam int categoryId,
+                                      @ModelAttribute @Valid Movie newMovie,
+                                      Errors errors) {
+        //TODO : 1
+        //jeśli wpiszę złą datę, to wywala error, a nie cofa do widoku movie/add
+        if (errors.hasErrors()) {
 
-        movies.add(movieTitle);
+            model.addAttribute("title", "Add Movie");
+            model.addAttribute("categories", categoryDao.findAll());
 
-        //Redirect to /movies
+            return "movie/add";
+        }
+
+        Category cat = categoryDao.findOne(categoryId);
+        newMovie.setCategory(cat);
+        movieDao.save(newMovie);
+
+        //Redirect to /movie
         return "redirect:";
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.GET)
+    public String displayRemoveMovieForm(Model model) {
+
+        model.addAttribute("movies", movieDao.findAll());
+        model.addAttribute("title", "Remove Movie");
+
+        return "movie/remove";
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    public String processRemoveMovieForm(@RequestParam int[] ids) {
+
+        for (int id : ids) {
+            movieDao.delete(id);
+        }
+
+        //Redirect to /movie
+        return "redirect:";
+    }
+
+    @RequestMapping(value = "category", method = RequestMethod.GET)
+    public String category(Model model,
+                           @RequestParam int id) {
+
+        Category cat = categoryDao.findOne(id);
+        List<Movie> movies = cat.getMovies();
+
+        model.addAttribute("movies", movies);
+        model.addAttribute("title", "Movies in Category: " + cat.getName());
+
+        return "movie/index";
     }
 }

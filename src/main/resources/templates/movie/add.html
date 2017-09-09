@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<h1 th:text="${title}">Default title</h1>
+
+<nav th:replace="fragments :: navigation" ></nav>
+
+<!--
+możemy ustalić akcję, tzn. gdzie ma nas przekierować po naciśnięciu submit
+jeśli nie ma akcji, to przeniesie nas w to samo miejsce:
+http://localhost:8080/movies/add
+<form method="post" action="/movie/add">
+-->
+<!--/*@thymesVar id="movie" type="com.gmail.alisarrian.lamamultimedia.models.Movie"*/-->
+<form method="post" style="max-width: 600px" th:object="${movie}">
+
+    <div class="form-group">
+        <label th:for="title">Movie title</label>
+        <!-- gwiazdka '*' oznacza "użyj atrybutu title w obiekcie zadeklarowanym powyżej (th:object="${movie}") -->
+        <input class="form-control" th:field="*{title}" />
+        <span th:errors="*{title}" class="error"></span>
+    </div>
+
+    <div class="form-group">
+        <label th:for="year">Year</label>
+        <input class="form-control" th:field="*{year}" />
+        <span th:errors="*{year}" class="error"></span>
+    </div>
+
+    <div class="form-group">
+        <label th:for="type">Type</label>
+        <select name="categoryId">
+            <option th:each="category : ${categories}"
+                    th:text="${category.name}"
+                    th:value="${category.id}"></option>
+        </select>
+    </div>
+
+    <input type="submit" value="Add Movie" />
+
+</form>
+
+</body>
+
+</html>
