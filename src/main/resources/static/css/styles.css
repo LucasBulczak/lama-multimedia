@@ -1,11 +1,340 @@
-body {
-    font-family: sans-serif;
+html, body
+{
+    height: 100%;
+}
+
+body
+{
+    background-color: #2F3336;
+    color: #efefef;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 17px;
+}
+
+h1.logo
+{
+    font-size: 34px;
+    font-weight: 700;
+    color: #efefef;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin-top: 50px;
+    margin-bottom: 40px;
 }
 
 nav {
-    margin-bottom: 20px;
+    background-color: #1c74b2;
+    text-align: center;
+    max-height: 50px;
+    border-top: 1px solid #0a2b42;
+    border-bottom: 1px solid #0a2b42;
 }
 
-.user-nav {
-    float: right;
+.menu
+{
+    list-style-type: none; /*remove markers before each list element*/
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    height: 35px;
+    line-height: 200%; /**/
+    display: inline-block;
+}
+
+/*edytujemy wygląd linków w menu*/
+.menu a
+{
+    color: #efefef;
+    text-decoration: none; /*usunięcie podkreślenia w linku*/
+    display: block;     /*zachowanie linku jako blok - hiperłącze jest nie tylko text*/
+}
+
+/* styles of elements (li -> list items) in class 'menu'*/
+.menu > li
+{
+    float: left;
+    width: 150px;
+    height: 40px;
+    border-right: 1px dashed #0a2b42; /*pionowy separator po prawej stronie od każdego li*/
+}
+
+/*pionowy separator tylko dla pierwsze li*/
+.menu > li:first-child
+{
+    border-left: 1px dashed #0a2b42;
+}
+
+.menu > li:hover
+{
+    background-color: #0080FF;
+}
+
+/*zachowanie po najechaniu kursorem na li*/
+.menu > li:hover > a
+{
+    color: #0a2b42;
+}
+
+.menu > li > ol
+{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 40px;
+    display: none;
+}
+
+.menu > li:hover > ol
+{
+    display: block;
+}
+
+.menu > li > ol > li
+{
+    background-color: #0080FF;
+    position: relative;
+    z-index: 100;
+    border-top: dashed #0a2b42;
+}
+
+.menu > li > ol > li:hover
+{
+    background-color: #0080FF;
+}
+
+.menu > li > ol > li:hover > a
+{
+    color: #0a2b42;
+}
+
+
+
+
+
+
+#sec_movies,
+#sec_serials
+{
+    height: 100%;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sec_movies > p,
+#sec_serials > p
+{
+    text-align: center;
+}
+
+h1
+{
+    font-size: 44px;
+    font-weight: 400;
+    color: #39a5f1;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.movieRow
+{
+    width: 960px;
+    margin: 20px;
+    border: groove #0a2b42;
+}
+
+.movieIcon
+{
+    float: left;
+    width: 100px;
+    height: 140px;
+    margin: 10px;
+    /*border-right: groove #0a2b42;*/
+}
+
+
+.imgToResize
+{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.shortDescription
+{
+    float: left;
+    width: 740px;
+    margin: 10px;
+}
+
+.ratingContainer
+{
+    float: left;
+    width: 60px;
+    /*height: 140px;*/
+    margin: 10px;
+}
+
+.rate
+{
+    width: 40px;
+    height: 50px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a.movieRowLink
+{
+    color: #efefef;
+    text-decoration: none;
+    /* poniższa linia, żeby cały movieRow zachowywał się jak blok i był hiperłączem do strony konkretnego filmu */
+    display: block;
+    /* nadajemy wymiary blokowi */
+    width: 960px;
+    height: 160px;
+}
+
+
+
+
+
+#sec_single_movie
+{
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.moviedata
+{
+    width: 960px;
+    margin: 20px;
+}
+
+.movieInfo
+{
+    float: left;
+    width: 250px;
+    margin: 10px;
+}
+
+.longDescription
+{
+    float: left;
+    width: 550px;
+    margin: 10px;
+}
+
+.longDescription > p
+{
+    text-align: justify;
+}
+
+.addForm
+{
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sec_single_movie > p,
+#add_movie > p,
+#categories > p,
+#add_category > p
+
+{
+    text-align: center;
+}
+
+.form-group
+{
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-group > label
+{
+    display: inline-block;
+    float: left;
+    width: 275px;
+
+}
+
+.form-control
+{
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    width: 525px;
+    outline: none;
+    padding: 0px 0px 0px 0px;
+    font-style: italic;
+}
+
+select
+{
+    width: 525px;
+}
+
+select > option
+{
+    text-align: right;
+}
+
+.addForm input[type=submit]
+{
+    font-size: 16px;
+    border: none;
+    padding: 8px 10px 8px 10px;
+    background-color: #0080FF;
+    color: #efefef;
+    margin: auto;
+    display: block;
+}
+
+.categoryLinkButton
+{
+    font-size: 16px;
+    width: 140px;
+    height: 18px;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    padding: 8px 10px 8px 10px;
+    background-color: #0080FF;
+    color: #efefef;
+    margin: auto;
+    display: block;
+}
+.addForm input[type=submit]:hover
+{
+    background-color: #0a2b42;
+}
+
+#categories > div
+{
+    width: 500px;
+    margin: auto;
+    text-align: justify;
+}
+
+#categories a
+{
+    color: #efefef;
+    text-decoration: none; /*usunięcie podkreślenia w linku*/
+    display: block;     /*zachowanie linku jako blok - hiperłącze jest nie tylko text*/
+}
+
+
+footer
+{
+    clear: both;
+    text-align: center;
+    background-color: #222222;
+    padding: 0px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }

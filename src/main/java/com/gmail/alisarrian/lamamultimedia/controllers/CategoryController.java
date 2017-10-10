@@ -23,7 +23,9 @@ public class CategoryController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String index(Model model, @RequestParam(defaultValue = "0") int id) {
 
-        model.addAttribute("title", "Categories");
+        model.addAttribute("secHeader", "Categories");
+        model.addAttribute("secDescription",
+                "Click on the category name to see what movies it contains (from added to the database) ;-)");
         model.addAttribute("categories", categoryDao.findAll());
 
         return "category/index";
@@ -33,7 +35,8 @@ public class CategoryController {
     public String add(Model model) {
 
         model.addAttribute(new Category());
-        model.addAttribute("title", "Add Category");
+        model.addAttribute("secHeader", "Add Category");
+
 
         return "category/add";
     }
@@ -44,7 +47,7 @@ public class CategoryController {
                       Errors errors) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Add Category");
+            model.addAttribute("secHeader", "Add Category");
             return "category/add";
         }
 

@@ -31,19 +31,23 @@ public class MovieController {
     public String index(Model model) {
 
         model.addAttribute("movies", movieDao.findAll());
-        model.addAttribute("title", "My Movies");
+        model.addAttribute("secHeader", "List of Movies");
+        model.addAttribute("secDescription",
+                "I have only watched part of them. The rest is on my \"to-do list\" ;-) ");
 
-        return "movie/index";
+        return "movies/movie/index";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddMovieForm(Model model) {
 
-        model.addAttribute("title", "Add Movie");
+        model.addAttribute("secHeader", "Add new movie");
+        model.addAttribute("secDescription",
+                "Remember! You have to complete all fields!");
         model.addAttribute(new Movie()); /* equal to model.addAttribute("movie", new Movie());*/
         model.addAttribute("categories", categoryDao.findAll());
 
-        return "movie/add";
+        return "movies/movie/add";
     }
 
     //Jedna z dróg
@@ -58,14 +62,15 @@ public class MovieController {
                                       @RequestParam int categoryId,
                                       @ModelAttribute @Valid Movie newMovie,
                                       Errors errors) {
-        //TODO : 1
-        //jeśli wpiszę złą datę, to wywala error, a nie cofa do widoku movie/add
+
         if (errors.hasErrors()) {
 
-            model.addAttribute("title", "Add Movie");
+            model.addAttribute("secHeader", "Add new movie");
+            model.addAttribute("secDescription",
+                    "Remember! You have to complete all fields!");
             model.addAttribute("categories", categoryDao.findAll());
 
-            return "movie/add";
+            return "movies/movie/add";
         }
 
         Category cat = categoryDao.findOne(categoryId);
@@ -80,9 +85,9 @@ public class MovieController {
     public String displayRemoveMovieForm(Model model) {
 
         model.addAttribute("movies", movieDao.findAll());
-        model.addAttribute("title", "Remove Movie");
+        model.addAttribute("secHeader", "Remove Movie");
 
-        return "movie/remove";
+        return "movies/movie/remove";
     }
 
     @RequestMapping(value = "remove", method = RequestMethod.POST)
@@ -104,8 +109,21 @@ public class MovieController {
         List<Movie> movies = cat.getMovies();
 
         model.addAttribute("movies", movies);
-        model.addAttribute("title", "Movies in Category: " + cat.getName());
+        model.addAttribute("secHeader", "Movies in Category: " + cat.getName());
 
-        return "movie/index";
+        return "movies/movie/index";
+    }
+
+    @RequestMapping(value = "singleMovie", method = RequestMethod.GET)
+    public String singleMovie(Model model,
+                              @RequestParam int id) {
+
+        Movie movie = movieDao.findOne(id);
+
+        model.addAttribute("movie", movie);
+        model.addAttribute("secHeader", movie.getTitle() + " (" + movie.getYear() + ")");
+        //model.addAttribute("secDescription", movie.getCategory().getName());
+
+        return "movies/movie/singleMovie";
     }
 }
