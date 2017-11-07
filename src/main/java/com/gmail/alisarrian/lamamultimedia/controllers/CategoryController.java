@@ -21,14 +21,14 @@ public class CategoryController {
     CategoryDao categoryDao;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String index(Model model, @RequestParam(defaultValue = "0") int id) {
+    public String index(Model model) {
 
         model.addAttribute("secHeader", "Categories");
         model.addAttribute("secDescription",
                 "Click on the category name to see what movies it contains (from added to the database) ;-)");
         model.addAttribute("categories", categoryDao.findAll());
 
-        return "category/index";
+        return "movies/category/index";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
@@ -38,7 +38,7 @@ public class CategoryController {
         model.addAttribute("secHeader", "Add Category");
 
 
-        return "category/add";
+        return "movies/category/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -48,10 +48,29 @@ public class CategoryController {
 
         if (errors.hasErrors()) {
             model.addAttribute("secHeader", "Add Category");
-            return "category/add";
+            return "movies/category/add";
         }
 
         categoryDao.save(category);
+
+        return "redirect:";
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.GET)
+    public String displayRemoveCategoryForm(Model model) {
+
+        model.addAttribute("categories", categoryDao.findAll());
+        model.addAttribute("secHeader", "Remove Category");
+
+        return "movies/category/remove";
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    public String processRemoveCategoryForm(@RequestParam int[] ids) {
+
+        for (int id : ids) {
+            categoryDao.delete(id);
+        }
 
         return "redirect:";
     }

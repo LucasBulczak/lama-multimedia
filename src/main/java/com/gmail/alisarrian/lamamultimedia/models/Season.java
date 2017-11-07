@@ -1,6 +1,9 @@
 package com.gmail.alisarrian.lamamultimedia.models;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Category {
+public class Season {
 
     @Id
     @GeneratedValue
@@ -23,8 +26,10 @@ public class Category {
     @Size(min = 3, max = 15)
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "category_id")
-    @Setter(AccessLevel.NONE)
-    private List<Movie> movies = new ArrayList<>();
+    @ManyToOne
+    Serial serial;
+
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "season_id")
+    private List<Episode> episodes = new ArrayList<>();
 }

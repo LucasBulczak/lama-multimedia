@@ -4,6 +4,7 @@
 <head th:fragment="head">
 
     <meta charset="utf-8" />
+    <!--<meta http-equiv="Cache-control" content="no-cache">-->
     <title>Multimedia</title>
     <meta name="description" content="Training project" />
     <meta name="author" content="Lucas Bulczak" />
@@ -27,25 +28,24 @@
                     <ol>
                         <li><a href="/movie"            >Movies</a></li>
                         <li><a href="/movie/add"        >Add movie</a></li>
+                        <li><a href="/movie/remove"     >Remove movie</a></li>
                         <li><a href="/category"         >Categories</a></li>
                         <li><a href="/category/add"     >Add category</a></li>
-                        <li><a href="/movie/remove"     >Remove</a></li>
+                        <li><a href="/category/remove"     >Remove category</a></li>
                     </ol>
                 </li>
                 <li><a href="/serial">Serials</a>
                     <ol>
                         <li><a href="/serial">Serial list</a></li>
-                        <li><a href="#">Add serial</a></li>
-                        <li><a href="#">Add episode</a></li>
-                        <li><a href="#">Remove</a></li>
+                        <li><a href="/serial/add">Add serial</a></li>
+                        <li><a href="/serial/remove">Remove Serial</a></li>
                     </ol>
                 </li>
-                <li><a href="#">Books</a>
+                <li><a href="/book">Books</a>
                     <ol>
-                        <li><a href="#">Book list</a></li>
-                        <li><a href="#">Add book</a></li>
-                        <li><a href="#">Add category</a></li>
-                        <li><a href="#">Remove</a></li>
+                        <li><a href="/book">Book list</a></li>
+                        <li><a href="/book/add">Add</a></li>
+                        <li><a href="/book/remove">Remove</a></li>
                     </ol>
                 </li>
                 <li><a href="#">Ranking</a></li>
@@ -57,13 +57,18 @@
     <main>
 
         <article>
+            <!-- HOME -->
+            <section id = "sec_home" th:fragment="sec_home">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+            </section>
             <!-- MOVIES -->
             <section id = "sec_movies" th:fragment="sec_movies">
                 <p th:unless="${movies} and ${movies.size()}">There is no movies in your database!</p>
                     <h1 th:text="${secHeader}">Default title</h1>
                     <p th:text="${secDescription}">Default text</p>
                     <div class="movieRow" th:each="movie : ${movies}">
-                        <a th:href="'movie/singleMovie?id=' + ${movie.id}" class="movieRowLink">
+                        <a th:href="'/movie/singleMovie?id=' + ${movie.id}" class="movieRowLink">
                             <div class="movieIcon" th:fragment="movieIcon">
                                 <!-- if there is no iconUrl -->
                                 <div th:if="${movie.iconUrl}">
@@ -113,7 +118,6 @@
 
                     <div class="form-group">
                         <label th:for="title">Movie title</label>
-                        <!-- gwiazdka '*' oznacza "użyj atrybutu title w obiekcie zadeklarowanym powyżej (th:object="${movie}") -->
                         <input class="form-control" th:field="*{title}" />
                         <span th:errors="*{title}" class="error"></span>
                     </div>
@@ -173,6 +177,18 @@
 
                 </form>
             </section>
+            <section id = "remove_movie" th:fragment="remove_movie">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post">
+                    <div th:each="movie : ${movies}" class="checkbox">
+                        <input type="checkbox" name="ids" th:value="${movie.id}" th:id="${movie.id}"/>
+                        <label th:for="${movie.id}" th:text="${movie.title}"></label>
+                        <br />
+                    </div>
+                    <span>&nbsp;</span><input type="submit" value="Remove Movie" />
+                </form>
+            </section>
             <section id = "categories" th:fragment="categories">
                 <h1 th:text="${secHeader}">Default title</h1>
                 <p th:text="${secDescription}">Default text</p>
@@ -182,8 +198,12 @@
                             <a th:href="'/movie/category?id=' + ${category.id}" th:text="${category.name}"></a>
                         </li>
                     </ul>
+                    <div class="linkButtons">
+                        <p><a href="category/add" class="categoryLinkButton">Add Category</a></p>
+                        <p><a href="category/remove" class="categoryLinkButton">Remove Category</a></p>
+                    </div>
+                    <div style="clear: both"></div>
 
-                    <p><a href="/category/add" class="categoryLinkButton">Add Category</a></p>
                 </div>
 
             </section>
@@ -196,26 +216,22 @@
                         <input class="form-control" th:field="*{name}" />
                         <span th:errors="*{name}" class="error"></span>
                     </div>
-
                     <span>&nbsp;</span><input type="submit" value="Add Category" />
                 </form>
             </section>
-            <section id = "remove_movie" th:fragment="remove_movie">
+            <section id = "remove_category" th:fragment="remove_category">
                 <h1 th:text="${secHeader}">Default title</h1>
                 <p th:text="${secDescription}">Default text</p>
                 <form class="addForm" method="post">
-
-                    <div th:each="movie : ${movies}" class="checkbox">
-                        <input type="checkbox" name="ids" th:value="${movie.id}" th:id="${movie.id}"/>
-                        <label th:for="${movie.id}" th:text="${movie.title}"></label>
+                    <div th:each="category : ${categories}" class="checkbox">
+                        <input type="checkbox" name="ids" th:value="${category.id}" th:id="${category.id}"/>
+                        <label th:for="${category.id}" th:text="${category.name}"></label>
                         <br />
                     </div>
-
-                    <span>&nbsp;</span><input type="submit" value="Remove Movie" />
-
+                    <span>&nbsp;</span><input type="submit" value="Remove Serial" />
                 </form>
-
             </section>
+
 
             <!-- SERIALS -->
             <section id = "sec_serials" th:fragment="sec_serials">
@@ -223,8 +239,8 @@
                     <h1 th:text="${secHeader}">Default title</h1>
                     <p th:text="${secDescription}">Default text</p>
                     <div class="movieRow" th:each="serial : ${serials}">
-                            <div class="movieIcon" th:fragment="movieIcon">
-
+                        <a th:href="'/serial/singleSerial?id=' + ${serial.id}" class="movieRowLink">
+                            <div class="serialIcon" th:fragment="serialIcon">
                                 <!-- if there is no iconUrl -->
                                 <div th:if="${serial.iconUrl}">
                                     <!-- when using Thymeleaf, every tag has to have his own CLOSE TAG!!! -->
@@ -234,21 +250,307 @@
                                 <div th:unless="${serial.iconUrl}">
                                     <i class="icon-video"></i>
                                 </div>
-
                             </div>
                             <div class="shortDescription">
-                                <P th:text="${serial.title}  + ' (' + ${serial.year} + '), ' + ${serial.releasedData}"></P>
-                                <p th:text="${serial.description}">
-                                </p>
-
+                                <P th:text="${serial.title}  + ' (' + ${serial.year} + '), ' + ${serial.releasedDate}"></P>
+                                <p th:text="${serial.description}"></p>
                             </div>
                             <div class="ratingContainer">
                                 <div class="rate" th:text = "${serial.imdbRating}">0/10</div>
                                 <div class="rate" th:text = "${serial.watched}">Y/N</div>
                             </div>
                             <div style="clear: both"></div>
+                        </a>
                     </div>
             </section>
+            <section id = "sec_single_serial" th:fragment="sec_single_serial">
+                <p th:unless="${serial}">There is no such a movie in your database!</p>
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <div class = "movieData">
+                    <div th:replace="fragments :: serialIcon" ></div>
+                    <div class = "movieInfo">
+                        <b>IMDB rating:</b><div th:text="${serial.imdbRating}"></div>
+                        <b>Writer:</b><div th:text="${serial.writer}"></div>
+                        <b>Stars:</b><div th:text="${serial.actors}"></div>
+                        <b>Watched:</b>Y/N
+                    </div>
+                    <div class = "longDescription"><p th:text = "${serial.description}">Default text</p></div>
+                    <div class = "seasonList">
+                        <span>
+                            <p>Season list</p>
+                            <p id="text">Click on it to see episode list</p>
+                        </span>
+                        <ul>
+                            <li th:each="season : ${seasons}">
+                                <a th:href="'/serial/season?id=' + ${season.id}" th:text="${season.name}"></a>
+                            </li>
+                        </ul>
+                        <!--<p><a href="/serial/addSeason" class="categoryLinkButton">Add Season</a></p>-->
+                    </div>
+                </div>
+                <div class="linkButtons">
+                    <p><a th:href="'/serial/addSeason?id=' + ${serial.id}" class="categoryLinkButton">Add Season</a></p>
+                    <p><a th:href="'/serial/removeSeason?id=' + ${serial.id}" class="categoryLinkButton">Remove Season</a></p>
+                </div>
+                <div style="clear: both"></div>
+            </section>
+            <section id = "add_serial" th:fragment = "add_serial">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post" th:object="${serial}">
+
+                    <div class="form-group">
+                        <label th:for="title">Serial title</label>
+                        <input class="form-control" th:field="*{title}" />
+                        <span th:errors="*{title}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="year">Year</label>
+                        <input class="form-control" th:field="*{year}" />
+                        <span th:errors="*{year}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="releasedDate">Date of release</label>
+                        <input class="form-control" th:field="*{releasedDate}" />
+                        <span th:errors="*{releasedDate}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="writer">Writer</label>
+                        <input class="form-control" th:field="*{writer}" />
+                        <span th:errors="*{writer}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="actors">Actors</label>
+                        <input class="form-control" th:field="*{actors}" />
+                        <span th:errors="*{actors}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="serialGenre">Serial Genre</label>
+                        <input class="form-control" th:field="*{serialGenre}" />
+                        <span th:errors="*{serialGenre}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="description">Description</label>
+                        <input class="form-control" th:field="*{description}" />
+                        <span th:errors="*{description}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="iconUrl">Icon URL</label>
+                        <input class="form-control" th:field="*{iconUrl}" />
+                        <span th:errors="*{iconUrl}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="imdbRating">IMDB Rating</label>
+                        <input class="form-control" th:field="*{imdbRating}" />
+                        <span th:errors="*{imdbRating}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="watched">Have I seen it before? [Y/N]</label>
+                        <input class="form-control" th:field="*{watched}" />
+                        <span th:errors="*{watched}" class="error"></span>
+                    </div>
+                    <span>&nbsp;</span><input type="submit" value="Add Serial" />
+
+                </form>
+            </section>
+            <section id = "remove_serial" th:fragment="remove_serial">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post">
+                    <div th:each="serial : ${serials}" class="checkbox">
+                        <input type="checkbox" name="ids" th:value="${serial.id}" th:id="${serial.id}"/>
+                        <label th:for="${serial.id}" th:text="${serial.title}"></label>
+                        <br />
+                    </div>
+                    <span>&nbsp;</span><input type="submit" value="Remove Serial" />
+                </form>
+            </section>
+            <section id = "sec_season" th:fragment="sec_season">
+                <p th:unless="${episodes} and ${episodes.size()}">There is no episodes in your database!</p>
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <div class="linkButtons">
+                    <p><a th:href="'/serial/addEpisode?id=' + ${season.id}" class="categoryLinkButton">Add Episode</a></p>
+                    <p><a th:href="'/serial/removeEpisode?id=' + ${season.id}" class="categoryLinkButton">Remove Episode</a></p>
+                </div>
+                <div style="clear: both"></div>
+                    <div class="movieRow" th:each="episode : ${episodes}">
+                        <div class="episodeIcon" th:fragment="episodeIcon">
+                            <!--if there is no iconUrl -->
+                            <div th:if="${episode.iconUrl}">
+                                <!-- when using Thymeleaf, every tag has to have his own CLOSE TAG!!! -->
+                                <img class="imgToResize" th:src="${episode.iconUrl}"></img>
+                            </div>
+                            <!-- ELSE -->
+                            <div th:unless="${episode.iconUrl}">
+                                <i class="icon-video"></i>
+                            </div>
+                        </div>
+                        <div class="shortDescription">
+                            <P th:text="'Episode ' + ${episode.episodeNumber} + ', ' + ${episode.name}  + ' (' + ${episode.dateOfReleased} + ')'"></P>
+                            <p th:text="${episode.description}"></p>
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+            </section>
+            <section id = "add_season" th:fragment="add_season">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post"  th:object="${season}">
+                    <div class="form-group">
+                        <label th:for="name">Name</label>
+                        <input class="form-control" th:field="*{name}"/>
+                        <span th:errors="*{name}" class="error"></span>
+                    </div>
+                    <span>&nbsp;</span><input type="submit" value="Add Season " />
+                </form>
+            </section>
+            <section id = "remove_season" th:fragment="remove_season">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post">
+                    <div th:each="season : ${seasons}" class="checkbox">
+                        <input type="checkbox" name="ids" th:value="${season.id}" th:id="${season.id}"/>
+                        <label th:for="${season.id}" th:text="${season.name}"></label>
+                        <br />
+                    </div>
+                    <span>&nbsp;</span><input type="submit" value="Remove Season" />
+                </form>
+            </section>
+   1         <section id = "add_episode" th:fragment="add_episode">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post"  th:object="${episode}">
+                    <div class="form-group">
+                        <label th:for="name">Name</label>
+                        <input class="form-control" th:field="*{name}"/>
+                        <span th:errors="*{name}" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label th:for="episodeNumber">Number of episode</label>
+                        <input class="form-control" th:field="*{episodeNumber}" />
+                        <span th:errors="*{episodeNumber}" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label th:for="dateOfReleased">Date of release</label>
+                        <input class="form-control" th:field="*{dateOfReleased}" />
+                        <span th:errors="*{dateOfReleased}" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label th:for="description">Description</label>
+                        <input class="form-control" th:field="*{description}" />
+                        <span th:errors="*{description}" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label th:for="iconUrl">Icon URL</label>
+                        <input class="form-control" th:field="*{iconUrl}" />
+                        <span th:errors="*{iconUrl}" class="error"></span>
+                    </div>
+                    <span>&nbsp;</span><input type="submit" value="Add Episode " />
+                </form>
+            </section>
+            <section id = "remove_episode" th:fragment="remove_episode">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post">
+                    <div th:each="episode : ${episodes}" class="checkbox">
+                        <input type="checkbox" name="ids" th:value="${episode.id}" th:id="${episode.id}"/>
+                        <label th:for="${episode.id}" th:text="${episode.name}"></label>
+                        <br />
+                    </div>
+                    <span>&nbsp;</span><input type="submit" value="Remove Episode" />
+                </form>
+            </section>
+
+            <!-- BOOKS  -->
+            <section id = "sec_books" th:fragment="sec_books">
+                <p th:unless="${books} and ${books.size()}">There is no books in your database!</p>
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <div class="movieRow" th:each="book : ${books}">
+                        <div class="bookIcon" th:fragment="bookIcon">
+                            <!-- if there is no iconUrl -->
+                            <div th:if="${book.iconUrl}">
+                                <!-- when using Thymeleaf, every tag has to have his own CLOSE TAG!!! -->
+                                <img class="imgToResize" th:src="${book.iconUrl}"></img>
+                            </div>
+                            <!-- ELSE -->
+                            <div th:unless="${book.iconUrl}">
+                                <i class="icon-video"></i>
+                            </div>
+                        </div>
+                        <div class="shortDescription">
+                            <P th:text="${book.title}  + ' (' + ${book.releasedDate} + '), ' + ${book.writer} "></P>
+                            <p th:text="${book.description}"></p>
+                        </div>
+                        <div style="clear: both"></div>
+                </div>
+            </section>
+            <section id = "add_book" th:fragment = "add_book">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post" th:object="${book}">
+
+                    <div class="form-group">
+                        <label th:for="title">Book title</label>
+                        <input class="form-control" th:field="*{title}" />
+                        <span th:errors="*{title}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="releasedDate">Date of release</label>
+                        <input class="form-control" th:field="*{releasedDate}" />
+                        <span th:errors="*{releasedDate}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="writer">Writer</label>
+                        <input class="form-control" th:field="*{writer}" />
+                        <span th:errors="*{writer}" class="error"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label th:for="description">Description</label>
+                        <input class="form-control" th:field="*{description}" />
+                        <span th:errors="*{description}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="iconUrl">Icon URL</label>
+                        <input class="form-control" th:field="*{iconUrl}" />
+                        <span th:errors="*{iconUrl}" class="error"></span>
+                    </div>
+
+                    <span>&nbsp;</span><input type="submit" value="Add Book" />
+
+                </form>
+            </section>
+            <section id = "remove_book" th:fragment="remove_book">
+                <h1 th:text="${secHeader}">Default title</h1>
+                <p th:text="${secDescription}">Default text</p>
+                <form class="addForm" method="post">
+                    <div th:each="book : ${books}" class="checkbox">
+                        <input type="checkbox" name="ids" th:value="${book.id}" th:id="${book.id}"/>
+                        <label th:for="${book.id}" th:text="${book.title}"></label>
+                        <br />
+                    </div>
+                    <span>&nbsp;</span><input type="submit" value="Remove Book" />
+                </form>
+            </section>
+            <!--
+
+            -->
         </article>
     </main>
 

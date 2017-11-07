@@ -114,7 +114,11 @@ nav {
 
 
 #sec_movies,
-#sec_serials
+#sec_serials,
+#sec_single_movie,
+#sec_single_serial,
+#sec_season,
+#sec_books
 {
     height: 100%;
     width: 1000px;
@@ -122,8 +126,10 @@ nav {
     margin-right: auto;
 }
 
+#sec_home > p,
 #sec_movies > p,
-#sec_serials > p
+#sec_serials > p,
+#sec_books > p
 {
     text-align: center;
 }
@@ -141,10 +147,14 @@ h1
 {
     width: 960px;
     margin: 20px;
+    display: block;
     border: groove #0a2b42;
 }
 
-.movieIcon
+.movieIcon,
+.serialIcon,
+.episodeIcon,
+.bookIcon
 {
     float: left;
     width: 100px;
@@ -200,17 +210,42 @@ a.movieRowLink
 
 
 
-#sec_single_movie
+#sec_single_serial > .movieData
 {
-    width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+    height: 210px;
 }
 
-.moviedata
+#sec_single_serial > .movieData > .longDescription
+{
+    float: left;
+    width: 350px;
+    margin: 10px;
+}
+
+#sec_single_serial > .movieData > .movieInfo
+{
+    float: left;
+    width: 200px;
+    margin: 10px;
+}
+.linkButtons
+{
+    width: 960px;
+    height: 34px;
+    text-align: justify;
+}
+
+.movieData
 {
     width: 960px;
     margin: 20px;
+}
+
+.linkButtons > p
+{
+    padding: 10px;
+    float: left;
+    text-align: justify;
 }
 
 .movieInfo
@@ -232,6 +267,30 @@ a.movieRowLink
     text-align: justify;
 }
 
+.seasonList
+{
+    float: left;
+    width: 230px;
+    margin: 10px;
+    text-align: justify;
+}
+
+.seasonList > span
+{
+    text-align: center;
+}
+
+.seasonList > ul > li > a
+{
+    color: #efefef;
+    text-decoration: none;
+}
+
+#text
+{
+    font-size: 12px;
+}
+
 .addForm
 {
     width: 800px;
@@ -242,7 +301,9 @@ a.movieRowLink
 #sec_single_movie > p,
 #add_movie > p,
 #categories > p,
-#add_category > p
+#add_category > p,
+#add_book > p,
+#remove_book > p
 
 {
     text-align: center;
@@ -259,7 +320,6 @@ a.movieRowLink
     display: inline-block;
     float: left;
     width: 275px;
-
 }
 
 .form-control

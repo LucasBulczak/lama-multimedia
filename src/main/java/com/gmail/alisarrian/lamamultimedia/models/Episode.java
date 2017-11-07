@@ -1,18 +1,19 @@
 package com.gmail.alisarrian.lamamultimedia.models;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Category {
+public class Episode {
 
     @Id
     @GeneratedValue
@@ -23,8 +24,18 @@ public class Category {
     @Size(min = 3, max = 15)
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "category_id")
-    @Setter(AccessLevel.NONE)
-    private List<Movie> movies = new ArrayList<>();
+    @NotNull
+    private String episodeNumber;
+
+    @NotNull
+    String dateOfReleased;
+
+    @NotNull
+    String description;
+
+    @NotNull
+    String iconUrl;
+
+    @ManyToOne
+    Season season;
 }
