@@ -33,33 +33,30 @@ nav {
 
 .menu
 {
-    list-style-type: none; /*remove markers before each list element*/
+    list-style-type: none;
     margin: 0;
     padding: 0;
     font-size: 18px;
     height: 35px;
-    line-height: 200%; /**/
+    line-height: 200%;
     display: inline-block;
 }
 
-/*edytujemy wygląd linków w menu*/
 .menu a
 {
     color: #efefef;
-    text-decoration: none; /*usunięcie podkreślenia w linku*/
-    display: block;     /*zachowanie linku jako blok - hiperłącze jest nie tylko text*/
+    text-decoration: none;
+    display: block;
 }
 
-/* styles of elements (li -> list items) in class 'menu'*/
 .menu > li
 {
     float: left;
     width: 150px;
     height: 40px;
-    border-right: 1px dashed #0a2b42; /*pionowy separator po prawej stronie od każdego li*/
+    border-right: 1px dashed #0a2b42;
 }
 
-/*pionowy separator tylko dla pierwsze li*/
 .menu > li:first-child
 {
     border-left: 1px dashed #0a2b42;
@@ -108,10 +105,7 @@ nav {
     color: #0a2b42;
 }
 
-
-
-
-
+/*** SECTIONS ***/
 
 #sec_movies,
 #sec_serials,
@@ -199,9 +193,7 @@ a.movieRowLink
 {
     color: #efefef;
     text-decoration: none;
-    /* poniższa linia, żeby cały movieRow zachowywał się jak blok i był hiperłączem do strony konkretnego filmu */
     display: block;
-    /* nadajemy wymiary blokowi */
     width: 960px;
     height: 160px;
 }
@@ -383,11 +375,12 @@ select > option
 #categories a
 {
     color: #efefef;
-    text-decoration: none; /*usunięcie podkreślenia w linku*/
-    display: block;     /*zachowanie linku jako blok - hiperłącze jest nie tylko text*/
+    text-decoration: none;
+    display: block;
 }
 
 
+/*** FOOTER ***/
 footer
 {
     clear: both;
